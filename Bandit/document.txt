@@ -1,0 +1,72 @@
+Bandit
+
+It is a tool designed to find common security issues in Python code. Bandit processes/scans each file and once it has finished scanning all the files, it generates a report.
+
+Command to install: pip install bandit
+
+Example usage across a code tree:
+
+bandit -r ~/your_repos/project
+
+'-r' is used when you want to scan a directory
+
+e.g. PS C:\Work\Shahzaib\kafka-practice> bandit -r .\ 
+[main]  INFO    profile include tests: None
+[main]  INFO    profile exclude tests: None
+[main]  INFO    cli include tests: None
+[main]  INFO    cli exclude tests: None
+[main]  INFO    running on Python 3.10.11
+Run started:2023-10-21 09:36:32.647760
+
+Test results:
+
+Code scanned:
+        Total lines of code: 67
+        Total lines skipped (#nosec): 0
+
+Run metrics:
+        Total issues (by severity):
+                Undefined: 0
+                Low: 0
+                Medium: 0
+                High: 0
+        Total issues (by confidence):
+                Undefined: 0
+                Low: 0
+                Medium: 0
+                High: 0
+Files skipped (0):
+
+
+To check single file use command: bandit <file path>
+
+e.g. PS C:\Work\Shahzaib\kafka-practice> bandit .\consume.py
+[main]  INFO    profile include tests: None
+[main]  INFO    profile exclude tests: None
+[main]  INFO    cli include tests: None
+[main]  INFO    cli exclude tests: None
+[main]  INFO    running on Python 3.10.11
+Run started:2023-10-21 13:35:36.282967
+
+Test results:
+        No issues identified.
+
+Code scanned:
+        Total lines of code: 37
+        Total lines skipped (#nosec): 0
+
+Run metrics:
+        Total issues (by severity):
+                Undefined: 0
+                Low: 0
+                Medium: 0
+                High: 0
+        Total issues (by confidence):
+                Undefined: 0
+                Low: 0
+                Medium: 0
+                High: 0
+Files skipped (0)::
+
+
+If your code contains lines that trigger vulnerability errors, and you're sure it's okay, you can silence them by adding "# nosec" at the end of each line. In such cases, it is good practice to add a comment explaining why a given line was excluded from security checks.
