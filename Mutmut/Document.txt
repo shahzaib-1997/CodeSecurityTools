@@ -1,3 +1,48 @@
 Mutmut
 
-Mutmut is a mutation testing system for Python, with a strong focus on ease of use. 
+Mutmut is a mutation testing system for Python, with a strong focus on ease of use. But first, What is mutation testing?
+
+Mutation testing is a technique to help identify holes in test suites. It focus not on the quality of code, but on the quality of unit tests. It does this by making small changes in your codebase and running your test suite against it. The assumption is that if your tests don’t fail, then your tests aren’t specific enough and are missing some cases.
+
+
+Some highlight features of Mutmut are:
+
+Found mutants can be applied on disk with a simple command making it very easy to work with the results
+
+Remembers work that has been done, so you can work incrementally
+
+Supports all test runners (because mutmut only needs an exit code from the test command)
+
+If you use the hammett test runner you can go extremely fast! There’s special handling for this runner that has some pretty dramatic results.
+
+Can use coverage data to only do mutation testing on covered lines
+
+Battle tested on real libraries by multiple companies
+
+If you need to run mutmut on a python 2 code base use mutmut 1.5.0. Mutmut 1.9.0 is the last version to support python 3.4, 3.5 and 3.6.
+
+
+Install and run
+
+You can get started with a simple:
+
+pip install mutmut
+mutmut run
+
+This will by default run pytest (or unittest if pytest is unavailable) on tests in the “tests” or “test” folder and it will try to figure out where the code to mutate lies.
+
+
+Example mutations
+
+Integer literals are changed by adding 1. So 0 becomes 1, 5 becomes 6, etc.
+
+< is changed to <=
+
+break is changed to continue and vice versa
+
+In general the idea is that the mutations should be as subtle as possible. See __init__.py for the full list.
+
+However, the default configuration is likely to not fit your needs. One thing to note is that you may need to specify both the code directory and the test directory like so
+
+# Example
+mutmut run --paths-to-mutate "app/" --tests-dir "tests/"
