@@ -10,6 +10,104 @@ Talisman can be installed and used in one of the following ways:
 
 As a git hook as a global git hook template and a CLI utility (for git repo scanning)
 As a git hook into a single git repository
-Talisman can be set up as either a pre-commit or pre-push hook on the git repositories.
 
 Disclaimer: Secrets creeping in via a forced push in a git repository cannot be detected by Talisman. A forced push is believed to be notorious in its own ways, and we suggest git repository admins to apply appropriate measures to authorize such activities.
+
+Talisman can be set up as either a pre-commit or pre-push hook on the git repositories.
+
+It is recommended to install Talisman as a pre-commit git hook template, as that will cause Talisman to be present, not only in your existing git repositories, but also in any new repository that you 'init' or 'clone'.
+
+Run the following command on your terminal, to download and install the binary at $HOME/.talisman/bin
+
+As a pre-commit hook:
+
+bash -c "$(curl --silent https://thoughtworks.github.io/talisman/scripts/install.bash)"
+
+OR
+
+As a pre-push hook:
+
+bash -c "$(curl --silent https://thoughtworks.github.io/talisman/scripts/install.bash)" -- pre-push
+
+If you do not have TALISMAN_HOME set up in your $PATH, you will be asked an appropriate place to set it up. Choose the option number where you set the profile source on your machine.
+
+Remember to execute source on the path file or restart your terminal. If you choose to set the $PATH later, please export TALISMAN_HOME=$HOME/.talisman/bin to the path.
+
+Choose a base directory where Talisman should scan for all git repositories, and setup a git hook (pre-commit or pre-push, as chosen in step 1) as a symlink. This script will not clobber pre-existing hooks.
+
+
+Using Husky to install on windows:
+
+husky is an npm module for managing git hooks. In order to use husky, make sure you have already set TALISMAN_HOME to $PATH.
+
+Existing Users
+If you already are using husky, add the following lines to husky pre-commit in package.json
+
+Windows
+   "bash -c '\"%TALISMAN_HOME%\\${TALISMAN_BINARY_NAME}\" --githook pre-commit'"
+
+
+New Users
+If you want to use husky with multiple hooks along with talisman, add the following snippet to you package json.
+
+Windows
+    {
+       "husky": {
+         "hooks": {
+           "pre-commit": "bash -c '\"%TALISMAN_HOME%\\${TALISMAN_BINARY_NAME}\" --githook pre-commit'" && "other-scripts"
+           }
+       }
+   }
+
+After the installation is successful, Talisman will run checks for obvious secrets automatically before each commit or push (as chosen during installation). In case there are any security breaches detected, talisman will display a detailed report of the errors:
+
+$ git push
+Talisman Report:
++-----------------+-------------------------------------------------------------------------------+
+|     FILE        |                                    ERRORS                                     |
++-----------------+-------------------------------------------------------------------------------+
+| danger.pem      | The file name "danger.pem"                                                    |
+|                 | failed checks against the                                                     |
+|                 | pattern ^.+\.pem$                                                             |
++-----------------+-------------------------------------------------------------------------------+
+| danger.pem      | Expected file to not to contain hex encoded texts such as:                    |
+|                 | awsSecretKey=c64e8c79aacf5ddb02f1274db2d973f363f4f553ab1692d8d203b4cc09692f79 |
++-----------------+-------------------------------------------------------------------------------+
+
+In the above example, the file danger.pem has been flagged as a security breach due to the following reasons:
+
+The filename matches one of the pre-configured patterns.
+The file contains an awsSecretKey which is scanned and flagged by Talisman
+If you have installed Talisman as a pre-commit hook, it will scan only the diff within each commit. This means that it would only report errors for parts of the file that were changed.
+
+In case you have installed Talisman as a pre-push hook, it will scan the complete file in which changes are made. As mentioned above, it is recommended that you use Talisman as a pre-commit hook.
+
+
+Ignoring Files
+
+Create .talismanrc file which will ensure that Talisman will ignore the file, filecontent, filename, and filesize.
+
+If you're really sure you want to push that file, you can configure it into the .talismanrc file in the project root. The contents required for ignoring your failed files will be printed by Talisman on the console immediately after the Talisman Error Report:
+
+If you are absolutely sure that you want to ignore the above files from talisman detectors, consider pasting the following format in .talismanrc file in the project root
+fileignoreconfig:
+- filename: danger.pem
+  checksum: cf97abd34cebe895417eb4d97fbd7374aa138dcb65b1fe7f6b6cc1238aaf4d48
+  ignore_detectors: []
+
+Entering this in the .talismanrc file will ensure that Talisman will ignore the danger.pem file as long as the checksum matches the value mentioned in the checksum field.
+
+
+Configuring severity threshold
+
+Each validation is associated with a severity
+
+Low
+Medium
+High
+
+You can specify a threshold in your .talismanrc:
+
+threshold: medium
+This will report all Medium severity issues and higher (Potential risks that are below the threshold will be reported in the warnings)
+
