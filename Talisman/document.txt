@@ -1,10 +1,8 @@
-unit testing(Talisman)
-
+Unit testing(Talisman)
 
 Talisman is a tool that installs a hook to your repository to ensure that potential secrets or sensitive information do not leave the developer's workstation.
 
 It validates the outgoing changeset for things that look suspicious - such as potential SSH keys, authorization tokens, private keys etc.
-
 
 Talisman can be installed and used in one of the following ways:
 
@@ -61,7 +59,71 @@ Windows
 
 After the installation is successful, Talisman will run checks for obvious secrets automatically before each commit or push (as chosen during installation). In case there are any security breaches detected, talisman will display a detailed report of the errors:
 
-$ git push
+
+Setting up Talisman as a pre-commit hook on the git repositories.
+
+
+bash -c "$(curl --silent https://thoughtworks.github.io/talisman/scripts/install.bash)"
+
+Downloading talisman binary
+talisman_linux_amd64: OK
+
+
+Setting up talisman binary and helper script in /home/shahzaib-hnh/.talisman
+Setting up TALISMAN_HOME in path
+
+
+PLEASE CHOOSE WHERE YOU WISH TO SET TALISMAN_HOME VARIABLE AND talisman binary PATH (Enter option number):
+1) Set TALISMAN_HOME in ~/.bashrc
+2) Set TALISMAN_HOME in ~/.bash_profile
+3) Set TALISMAN_HOME in ~/.profile
+4) I will set it later
+#? 1
+
+
+Setting up interaction mode
+
+DO YOU WANT TO BE PROMPTED WHEN ADDING EXCEPTIONS TO .talismanrc FILE?
+Enter y to install in interactive mode. Press any key to continue without interactive mode (y/n):y
+
+Setting up TALISMAN_HOME in /home/shahzaib-hnh/.bashrc
+After the installation is complete, you will need to manually restart the terminal or source /home/shahzaib-hnh/.bashrc file
+Press any key to continue ...
+Setting up pre-commit hook in git template directory
+No git template directory is configured. Let's add one.
+(this will override any system git templates and modify your git config file)
+
+Git template directory: (/home/shahzaib-hnh/.git-template) /mnt/c/Work/Shahzaib/kafka-practice
+
+Setting up template pre-commit hook
+'/mnt/c/Work/Shahzaib/kafka-practice/hooks/pre-commit' -> '/home/shahzaib-hnh/.talisman/bin/talisman_hook_script'
+Talisman template hook successfully installed.
+
+Setting up talisman hook recursively in git repos
+Please enter root directory to search for git repos (Default: /home/shahzaib-hnh): /mnt/c/Work
+        Searching /mnt/c/Work for git repositories
+Setting up pre-commit hook in /mnt/c/Work/Project-The-Next-Photo/.git/hooks
+'/mnt/c/Work/Project-The-Next-Photo/.git/hooks/pre-commit' -> '/home/shahzaib-hnh/.talisman/bin/talisman_hook_script'
+DONE
+Setting up pre-commit hook in /mnt/c/Work/Shahzaib/ERP_SYSTEM/.git/hooks
+'/mnt/c/Work/Shahzaib/ERP_SYSTEM/.git/hooks/pre-commit' -> '/home/shahzaib-hnh/.talisman/bin/talisman_hook_script'
+DONE
+
+Setting up pre-commit hook in /mnt/c/Work/Shahzaib/Project-The-Next-Photo/.git/hooks
+'/mnt/c/Work/Shahzaib/Project-The-Next-Photo/.git/hooks/pre-commit' -> '/home/shahzaib-hnh/.talisman/bin/talisman_hook_script'
+DONE
+Setting up pre-commit hook in /mnt/c/Work/Shoaib/Project-The-Next-Photo/.git/hooks
+'/mnt/c/Work/Shoaib/Project-The-Next-Photo/.git/hooks/pre-commit' -> '/home/shahzaib-hnh/.talisman/bin/talisman_hook_script'
+DONE
+Setting up pre-commit hook in /mnt/c/Work/Shoaib/stablephotoai/.git/hooks
+'/mnt/c/Work/Shoaib/stablephotoai/.git/hooks/pre-commit' -> '/home/shahzaib-hnh/.talisman/bin/talisman_hook_script'
+DONE
+Setting up pre-commit hook in /mnt/c/Work/Shoaib/Tasks/.git/hooks
+'/mnt/c/Work/Shoaib/Tasks/.git/hooks/pre-commit' -> '/home/shahzaib-hnh/.talisman/bin/talisman_hook_script'
+DONE
+
+$ git commit -m "Initial commit"
+
 Talisman Report:
 +-----------------+-------------------------------------------------------------------------------+
 |     FILE        |                                    ERRORS                                     |
@@ -110,4 +172,3 @@ You can specify a threshold in your .talismanrc:
 
 threshold: medium
 This will report all Medium severity issues and higher (Potential risks that are below the threshold will be reported in the warnings)
-
