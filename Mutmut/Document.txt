@@ -27,6 +27,7 @@ Install and run
 You can get started with a simple:
 
 pip install mutmut
+
 mutmut run
 
 This will by default run pytest (or unittest if pytest is unavailable) on tests in the “tests” or “test” folder and it will try to figure out where the code to mutate lies.
@@ -44,5 +45,75 @@ In general the idea is that the mutations should be as subtle as possible. See _
 
 However, the default configuration is likely to not fit your needs. One thing to note is that you may need to specify both the code directory and the test directory like so
 
-# Example
 mutmut run --paths-to-mutate "app/" --tests-dir "tests/"
+
+# Example
+
+PS C:\Work\Shoaib\Tasks\Mutmut> mutmut run --paths-to-mutate "src_code/" --tests-dir "tests/"
+
+- Mutation testing starting -
+
+These are the steps:
+1. A full test suite run will be made to make sure we
+   can run the tests successfully and we know how long
+   it takes (to detect infinite loops for example)
+2. Mutants will be generated and checked
+
+Results are stored in .mutmut-cache.
+Print found mutants with `mutmut results`.
+
+Legend for output:
+🎉 Killed mutants.   The goal is for everything to end up in this bucket.
+⏰ Timeout.          Test suite took 10 times as long as the baseline so were killed.
+🤔 Suspicious.       Tests took a long time, but not long enough to be fatal.
+🙁 Survived.         This means your tests need to be expanded.
+🔇 Skipped.          Skipped.
+
+1. Running tests without mutations
+⠇ Running...Done
+
+2. Checking mutants
+⠦ 82/82  🎉 23  ⏰ 0  🤔 11  🙁 48  🔇 0
+
+
+To view the full report, type the following in a terminal
+
+mutmut results
+
+This will show you a value like
+
+To apply a mutant on disk:
+    mutmut apply <id>
+
+To show a mutant:
+    mutmut show <id>
+
+
+Suspicious 🤔 (12)
+
+---- src_code/main.py (12) ----
+
+23-26, 31-32, 35-39, 43
+
+Survived 🙁 (48)
+
+---- src_code/main.py (48) ----
+
+2, 5-6, 8, 14, 16, 18-19, 30, 40-42, 45, 48-82
+
+
+It tells you which mutants (2, 5, and 6) survived and the file that had code changed.
+
+To view the individual mutant, you can type in "mutmut show <id>" to show you the diff between the original code and the mutation
+
+PS C:\Work\Shoaib\Tasks\Mutmut> mutmut show 2
+--- src_code/main.py
++++ src_code/main.py
+@@ -1,7 +1,7 @@
+ from datetime import datetime, timedelta, time
+
+ def convert_in_seconds(t):
+-    t_in_seconds = t.hour * 3600 + t.minute * 60 + t.second
++    t_in_seconds = t.hour * 3601 + t.minute * 60 + t.second
+     return t_in_seconds
+
