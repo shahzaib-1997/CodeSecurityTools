@@ -82,12 +82,6 @@ mutmut results
 
 This will show you a value like
 
-To apply a mutant on disk:
-    mutmut apply <id>
-
-To show a mutant:
-    mutmut show <id>
-
 
 Suspicious 🤔 (12)
 
@@ -116,4 +110,7 @@ PS C:\Work\Shoaib\Tasks\Mutmut> mutmut show 2
 -    t_in_seconds = t.hour * 3600 + t.minute * 60 + t.second
 +    t_in_seconds = t.hour * 3601 + t.minute * 60 + t.second
      return t_in_seconds
+
+To apply a mutant on disk:
+    mutmut apply <id>
 

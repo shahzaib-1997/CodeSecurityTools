@@ -1,4 +1,4 @@
-Unit testing(Talisman)
+Talisman
 
 Talisman is a tool that installs a hook to your repository to ensure that potential secrets or sensitive information do not leave the developer's workstation.
 
